@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -36,3 +37,26 @@ export const { add, remove, filterItems } = contactsSlice.actions;
 
 export const getItemsValue = state => state.contacts.items;
 export const getFilterValue = state => state.contacts.filter;
+
+export const contactsApi = createApi({
+  reducerPath: 'contactsApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://630260e5c6dda4f287b8c052.mockapi.io',
+  }),
+  tagTypes: ['Contact'],
+  endpoints: builder => ({
+    getContacts: builder.query({
+      query: () => `/contacts`,
+      providesTags: ['Contact'],
+    }),
+    deleteContact: builder.mutation({
+      query: id => ({
+        url: `/contacts/${id}`,
+        method: 'DELETE',
+        invalidatesTags: ['Contact'],
+      }),
+    }),
+  }),
+});
+
+export const { useGetContactsQuery, useDeleteContactMutation } = contactsApi;
