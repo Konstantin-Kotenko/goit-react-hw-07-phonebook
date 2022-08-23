@@ -9,7 +9,7 @@ export const ContactList = () => {
     data,
     // isFetching
   } = useGetContactsQuery();
-  const [deleteContact] = useDeleteContactMutation;
+  const [deleteContact] = useDeleteContactMutation();
 
   return (
     <>
