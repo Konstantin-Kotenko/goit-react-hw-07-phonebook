@@ -1,42 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const contactsSlice = createSlice({
-  name: 'contacts',
-  initialState: {
-    items: [],
-    filter: '',
-  },
+export const filterSlice = createSlice({
+  name: 'filter',
+  initialState: { value: '' },
   reducers: {
-    add: (state, action) => {
-      state.items.push(action.payload);
-    },
-    remove(state, action) {
-      return {
-        ...state,
-        items: state.items.filter(item => item.id !== action.payload),
-      };
-    },
     filterItems(state, action) {
-      return { ...state, filter: action.payload };
+      state.value = action.payload;
     },
   },
 });
 
-const persistConfig = {
-  key: 'contacts',
-  storage,
-  whitelist: ['items'],
-};
-
-export default persistReducer(persistConfig, contactsSlice.reducer);
-
-export const { add, remove, filterItems } = contactsSlice.actions;
-
-export const getItemsValue = state => state.contacts.items;
-export const getFilterValue = state => state.contacts.filter;
+export const { filterItems } = filterSlice.actions;
+export const getFilterValue = state => state.filter.value;
 
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
@@ -50,10 +26,13 @@ export const contactsApi = createApi({
       providesTags: ['Contact'],
     }),
     createContact: builder.mutation({
-      query: newContact => ({
-        url: '/contact',
+      query: ({ name, number }) => ({
+        url: `/contacts`,
         method: 'POST',
-        body: newContact,
+        body: {
+          name,
+          phone: number,
+        },
       }),
       invalidatesTags: ['Contact'],
     }),
