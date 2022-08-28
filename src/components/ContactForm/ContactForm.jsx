@@ -1,6 +1,10 @@
 import { Formik, ErrorMessage } from 'formik';
-import * as yup from 'yup';
-import { useCreateContactMutation } from 'redux/contacts';
+import { schema } from 'schema/schema';
+import {
+  useCreateContactMutation,
+  useGetContactsQuery,
+} from 'redux/contacts/contacts';
+import { Notify } from 'notiflix';
 import {
   FormContact,
   Label,
@@ -9,48 +13,35 @@ import {
   ErrorText,
 } from './ContactForm.styled';
 
-const FormError = ({ name }) => {
-  return (
-    <ErrorMessage
-      name={name}
-      render={message => <ErrorText>{message}</ErrorText>}
-    />
-  );
-};
-
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .required('Enter name')
-    .matches(
-      /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
-      "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-    ),
-  number: yup
-    .string()
-    .required('Enter number')
-    .matches(
-      /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
-      'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
-    ),
-});
-
-const initialValues = {
-  name: '',
-  number: '',
-};
+const FormError = ({ name }) => (
+  <ErrorMessage
+    name={name}
+    render={message => <ErrorText>{message}</ErrorText>}
+  />
+);
 
 export const ContactForm = () => {
-  const [createContact] = useCreateContactMutation();
+  const [createContact, { isLoading }] = useCreateContactMutation();
+  const { data } = useGetContactsQuery();
 
   const handleSubmit = (values, { resetForm }) => {
+    const isContactName = data.find(
+      ({ name }) => name.toLowerCase() === values.name.toLowerCase()
+    );
+
+    if (isContactName) {
+      return Notify.info(
+        `you have this "${values.name.toUpperCase()}" contact`
+      );
+    }
     createContact(values);
     resetForm();
+    Notify.success(`you create new "${values.name.toUpperCase()}" contact`);
   };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ name: '', number: '' }}
       onSubmit={handleSubmit}
       validationSchema={schema}
     >
@@ -65,7 +56,9 @@ export const ContactForm = () => {
           <Input type="tel" name="number" />
           <FormError name="number" />
         </Label>
-        <Button type="submit">Add contact</Button>
+        <Button type="submit" disabled={isLoading}>
+          Add contact
+        </Button>
       </FormContact>
     </Formik>
   );

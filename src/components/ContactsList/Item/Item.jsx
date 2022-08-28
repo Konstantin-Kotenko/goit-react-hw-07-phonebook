@@ -1,16 +1,16 @@
 import { Item, Text, Button } from './Item.styled';
-import { getFilterValue } from 'redux/contacts';
+import { getFilterValue } from 'redux/contacts/filter';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
-import { useGetContactsQuery } from 'redux/contacts';
+import { useGetContactsQuery } from 'redux/contacts/contacts';
 
-export const ContactItem = ({ contacts, onDelete }) => {
+export const ContactItem = ({ contacts, onDelete, isLoading }) => {
   const filter = useSelector(getFilterValue);
 
   const checkedContact = useMemo(() => {
     return createSelector(
-      [r => r.data, (_, filter) => filter],
+      [r => r.data, (contacts, filter) => filter],
       (contacts, filter) =>
         contacts?.filter(({ name }) => {
           return name.toLowerCase().includes(filter.toLowerCase());
@@ -31,7 +31,9 @@ export const ContactItem = ({ contacts, onDelete }) => {
           <Text>
             {name} : {phone}
           </Text>
-          <Button onClick={() => onDelete(id)}>Delete</Button>
+          <Button onClick={() => onDelete(id)} disabled={isLoading}>
+            Delete
+          </Button>
         </Item>
       ))}
     </>

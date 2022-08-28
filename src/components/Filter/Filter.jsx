@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { filterItems, getFilterValue } from '../../redux/contacts';
+import { filterItems, getFilterValue } from '../../redux/contacts/filter';
 import { useSelector, useDispatch } from 'react-redux';
 import { Label, Input } from './Filter.styled';
 

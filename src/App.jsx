@@ -1,4 +1,5 @@
 import { Container } from './components/Container';
+import { FirstHeader, SecondHeader } from './styleConfig/headers';
 import { ContactForm } from './components/ContactForm';
 import { ContactList } from './components/ContactsList';
 import { Filter } from './components/Filter';
@@ -6,9 +7,9 @@ import { Filter } from './components/Filter';
 export const App = () => {
   return (
     <Container>
-      <h1>Phonebook</h1>
+      <FirstHeader>Phonebook</FirstHeader>
       <ContactForm />
-      <h2>Contacts</h2>
+      <SecondHeader>Contacts</SecondHeader>
       <Filter />
       <ContactList />
     </Container>
