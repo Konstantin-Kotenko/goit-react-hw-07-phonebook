@@ -1,9 +1,8 @@
 import { Item, Text, Button } from './Item.styled';
-import { getFilterValue } from 'redux/contacts/filter';
+import { getFilterValue, useGetContactsQuery } from 'redux/contacts/contacts';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit';
-import { useGetContactsQuery } from 'redux/contacts/contacts';
 
 export const ContactItem = ({ contacts, onDelete, isLoading }) => {
   const filter = useSelector(getFilterValue);
