@@ -6,7 +6,7 @@ import {
 } from 'redux/contacts/contacts';
 
 export const ContactList = () => {
-  const { data } = useGetContactsQuery();
+  const { data } = useGetContactsQuery('');
   const [deleteContact, { isLoading }] = useDeleteContactMutation();
 
   return (
