@@ -46,8 +46,8 @@ const contactsApi = createApi({
 });
 
 export const rootReducer = combineReducers({
-  contacts: { [contactsApi.reducerPath]: contactsApi.reducer },
   filter: filterSlice.reducer,
+  [contactsApi.reducerPath]: contactsApi.reducer,
 });
 
 export const { filterItems } = filterSlice.actions;
