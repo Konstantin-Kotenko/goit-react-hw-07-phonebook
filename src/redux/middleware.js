@@ -6,6 +6,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { contactsApi } from './contacts/contacts';
 
 export const middleware = getDefaultMiddleware => [
   ...getDefaultMiddleware({
@@ -13,4 +14,5 @@ export const middleware = getDefaultMiddleware => [
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
+  contactsApi.middleware,
 ];
