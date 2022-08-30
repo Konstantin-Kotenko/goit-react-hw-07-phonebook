@@ -3,6 +3,6 @@ import { middleware } from './middleware';
 import { rootReducer } from './contacts/contacts';
 
 export const store = configureStore({
-    reducer:rootReducer,
+    reducer:{rootReducer,},
   middleware: middleware,
 });
