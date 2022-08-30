@@ -13,7 +13,7 @@ const filterSlice = createSlice({
   },
 });
 
-const contactsApi = createApi({
+export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: baseApiUrl,
