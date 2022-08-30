@@ -6,7 +6,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { contactsApi } from './contacts/contacts';
+import { contactsApi } from './contacts/contacts.js';
 
 export const middleware = getDefaultMiddleware => [
   ...getDefaultMiddleware({
