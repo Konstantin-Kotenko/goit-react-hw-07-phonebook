@@ -51,7 +51,7 @@ export const rootReducer = combineReducers({
 });
 
 export const { filterItems } = filterSlice.actions;
-export const getFilterValue = state => state.filter.value;
+export const getFilterValue = state => state.rootReducer.filter.value;
 
 export const {
   useGetContactsQuery,
